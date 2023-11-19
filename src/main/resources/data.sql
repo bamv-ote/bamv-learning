@@ -9,6 +9,17 @@ WHERE
         SELECT 1 FROM m_user WHERE user_id='US00000001'
     );
 
+/*私が沖井さんをフォロー*/
+INSERT INTO t_follow
+SELECT
+    'FL00000002'
+    , 'user1'
+    , 'US00000001'
+WHERE
+    NOT EXISTS (
+        SELECT 1 FROM t_follow WHERE follow_id='FL00000002'
+    );
+
 /* t_user */
 INSERT INTO m_user
 SELECT
