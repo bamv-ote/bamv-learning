@@ -91,7 +91,7 @@ public class MicropostsController {
     }
 
     @GetMapping("/profile/{userid}")
-    String profile(Model model, HttpServletRequest httpServletRequest, @RequestParam(name = "page", defaultValue = "1") int page) {
+    String profile(Model model, @PathVariable String userid , @RequestParam(name = "page", defaultValue = "1") int page) {
         /* ユーザー認証情報からユーザIDを取得 */
         String userId ="US00000001";
 
