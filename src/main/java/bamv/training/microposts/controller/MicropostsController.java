@@ -92,15 +92,15 @@ public class MicropostsController {
 
     @GetMapping("/profile/{userid}")
     String profile(Model model, @PathVariable String userid , @RequestParam(name = "page", defaultValue = "1") int page) {
-        /* ユーザー認証情報からユーザIDを取得 */
-        String userId ="US00000001";
+
+        //String userId ="US00000001";
 
 
         /* Model ⇔ Controller */
-        UserDto user = userService.findUser(userId); // 自ユーザー情報
-        List<MicropostDto> followsMicropostList = micropostService.searchUserMicropost(userId, page); // 自ユーザーのマイクロポスト
-        int myFollowNumber = followService.findFollowNumber(userId); // 自ユーザーのフォロー数
-        int myFollowerNumber = followService.findFollowerNumber(userId); // 自ユーザーのフォロワー数
+        UserDto user = userService.findUser(userid); // userIDのひとの情報
+        List<MicropostDto> followsMicropostList = micropostService.searchUserMicropost(userid, page); // userIDのひとのマイクロポスト
+        int myFollowNumber = followService.findFollowNumber(userid); // userIDのひとのフォロー数
+        int myFollowerNumber = followService.findFollowerNumber(userid); // userIDのひとのフォロワー数
 
 
         /* View ⇔ Controller */

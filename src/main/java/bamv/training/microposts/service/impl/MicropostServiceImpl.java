@@ -44,7 +44,7 @@ public class MicropostServiceImpl implements MicropostService {
     }
 
     @Override
-    public List<MicropostDto> searchUserMicropost(String userId, int page) {
+    public List<MicropostDto>searchUserMicropost(String userId, int page) {
         return tMicropostDao.searchUserMicropost(userId, page)
                 .stream().map(it ->
                         new MicropostDto(
