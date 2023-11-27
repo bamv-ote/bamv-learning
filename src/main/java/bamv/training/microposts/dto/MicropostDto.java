@@ -11,7 +11,7 @@ public class MicropostDto {
 
     private String userid;
 
-    public MicropostDto(String name, String content, LocalDateTime postedDatetime,String test) {
+    public MicropostDto(String name, String content, LocalDateTime postedDatetime,String userid) {
         this.name = name;
         this.content = content;
         this.postedDatetime = postedDatetime;
