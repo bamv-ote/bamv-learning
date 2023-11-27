@@ -38,7 +38,8 @@ public class MicropostServiceImpl implements MicropostService {
                         new MicropostDto(
                                 mUserDao.findUser(it.getUserId()).getName(),
                                 it.getContent(),
-                                it.getPostedDatetime()
+                                it.getPostedDatetime(),
+                                it.getUserId()
                         )
                 ).toList();
     }
@@ -50,7 +51,8 @@ public class MicropostServiceImpl implements MicropostService {
                         new MicropostDto(
                                 mUserDao.findUser(it.getUserId()).getName(),
                                 it.getContent(),
-                                it.getPostedDatetime()
+                                it.getPostedDatetime(),
+                                it.getUserId()
                         )
                 ).toList();
     }

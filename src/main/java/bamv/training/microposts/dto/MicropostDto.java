@@ -9,10 +9,13 @@ public class MicropostDto {
 
     private LocalDateTime postedDatetime;
 
-    public MicropostDto(String name, String content, LocalDateTime postedDatetime) {
+    private String test;
+
+    public MicropostDto(String name, String content, LocalDateTime postedDatetime,String test) {
         this.name = name;
         this.content = content;
         this.postedDatetime = postedDatetime;
+        this.test = test;
     }
 
     public String getName() {
@@ -37,5 +40,13 @@ public class MicropostDto {
 
     public void setPostedDatetime(LocalDateTime postedDatetime) {
         this.postedDatetime = postedDatetime;
+    }
+
+    public String getTest() {
+        return test;
+    }
+
+    public void setTest(String name) {
+        this.test = test;
     }
 }
