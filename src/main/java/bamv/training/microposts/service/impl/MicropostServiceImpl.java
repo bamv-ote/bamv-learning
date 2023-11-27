@@ -54,7 +54,7 @@ public class MicropostServiceImpl implements MicropostService {
                         )
                 ).toList();
     }
-
+    
     @Override
     @Transactional
     public int createNewMicropost(String userId, String content) {

@@ -72,6 +72,8 @@ public class TMicropostDaoImpl implements TMicropostDao {
         return jdbcTemplate.query(query, rowMapper, userId, userId, offset);
     }
 
+
+
     @Override
     public int addNewMicropost(String userId, String content) {
         String newMicropostId = sequenceService.issueSequence("micropost_id");
