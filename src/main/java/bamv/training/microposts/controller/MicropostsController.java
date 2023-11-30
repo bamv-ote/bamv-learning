@@ -75,13 +75,14 @@ public class MicropostsController {
         String userId = httpServletRequest.getRemoteUser();
 
         /* Model ⇔ Controller */
-
+        int MicropostNumber = micropostService.countMicropostNumber(userId);
         UserDto user = userService.findUser(userId); // 自ユーザー情報
         List<MicropostDto> followsMicropostList = micropostService.searchUserMicropost(userId, page); // 自ユーザーのマイクロポスト
         int myFollowNumber = followService.findFollowNumber(userId); // 自ユーザーのフォロー数
         int myFollowerNumber = followService.findFollowerNumber(userId); // 自ユーザーのフォロワー数
 
         /* View ⇔ Controller */
+        model.addAttribute("micropostNumber",MicropostNumber);
         model.addAttribute("myUserName", user.getName());
         model.addAttribute("myFollowNumber", myFollowNumber);
         model.addAttribute("myFollowerNumber", myFollowerNumber);
@@ -98,6 +99,7 @@ public class MicropostsController {
 
 
         /* Model ⇔ Controller */
+        int MicropostNumber = micropostService.countMicropostNumber(userid);
         UserDto user = userService.findUser(userid); // userIDのひとの情報
         List<MicropostDto> followsMicropostList = micropostService.searchUserMicropost(userid, page); // userIDのひとのマイクロポスト
         int myFollowNumber = followService.findFollowNumber(userid); // userIDのひとのフォロー数
@@ -105,6 +107,7 @@ public class MicropostsController {
 
 
         /* View ⇔ Controller */
+        model.addAttribute("micropostNumber",MicropostNumber);
         model.addAttribute("myUserName", user.getName());
         model.addAttribute("myFollowNumber", myFollowNumber);
         model.addAttribute("myFollowerNumber", myFollowerNumber);

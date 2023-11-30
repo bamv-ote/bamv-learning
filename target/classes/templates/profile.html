@@ -40,7 +40,9 @@
         </aside>
 
         <div class="col-md-8">
-            <h3>投稿一覧</h3>
+            <h3>Micropost(
+                <span th:text="${micropostNumber}"></span>
+                )</h3>
             <div class="card mb-3" th:each="followsMicropost : ${followsMicropostList}">
                 <div class="row g-0">
                     <div
