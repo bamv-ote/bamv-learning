@@ -75,6 +75,7 @@ public class MicropostsController {
         String userId = httpServletRequest.getRemoteUser();
 
         /* Model ⇔ Controller */
+
         UserDto user = userService.findUser(userId); // 自ユーザー情報
         List<MicropostDto> followsMicropostList = micropostService.searchUserMicropost(userId, page); // 自ユーザーのマイクロポスト
         int myFollowNumber = followService.findFollowNumber(userId); // 自ユーザーのフォロー数
