@@ -24,9 +24,6 @@
                         <div class="col-md-8">
                             <div>
                                 <h5 th:text="${myUserName}"></h5>
-                                <p><a href="./myprofile">マイプロフィール</a></p>
-                                <p><span th:text="${myMicropostsNumber}"></span><small class="text-muted">
-                                    投稿</small></p>
                                 <span
                                 ><span th:text="${myFollowNumber}"></span
                                 ><small class="text-muted">フォロー</small></span
@@ -40,31 +37,12 @@
                     </div>
                 </div>
             </section>
-
-            <section>
-                <form th:action="@{/postnewmicropost}" th:object="${micropostForm}" method="post">
-                    <div class="mb-3">
-                        <div class="alert alert-danger" th:if="${#fields.hasErrors()}" th:text="バリデーションエラーが発生しました。"></div>
-                <textarea
-                        id="content"
-                        name="content"
-                        th:field="*{content}"
-                        placeholder="新規投稿"
-                        rows="5"
-                        cols="33"
-                        class="form-control"
-                ></textarea>
-                    </div>
-                    <input
-                            type="submit"
-                            class="btn btn-primary w-100"
-                    />
-                </form>
-            </section>
         </aside>
 
         <div class="col-md-8">
-            <h3>投稿一覧</h3>
+            <h3>Micropost(
+                <span th:text="${micropostNumber}"></span>
+                )</h3>
             <div class="card mb-3" th:each="followsMicropost : ${followsMicropostList}">
                 <div class="row g-0">
                     <div
@@ -96,21 +74,20 @@
                 <ul class="pagination">
                     <li class="page-item">
                         <th:block th:if="${page - 1} > 0">
-                            <a class="page-link" th:href="@{micropostshome?page={page}(page=${page - 1})}">前へ</a>
+                            <a class="page-link" th:href="@{?page={page}(page=${page - 1})}">前へ</a>
                         </th:block>
                         <th:block th:if="${page - 1} <= 0">
                             <a class="page-link" href="#">前へ</a>
                         </th:block>
                     </li>
-                    <li class="page-item"><a class="page-link" th:href="@{micropostshome?page={page}(page=${page})}"
+                    <li class="page-item"><a class="page-link" th:href="@{?page={page}(page=${page})}"
                                              th:text="${page}"></a></li>
-                    <li class="page-item"><a class="page-link"
-                                             th:href="@{micropostshome?page={page}(page=${page + 1 })}"
+                    <li class="page-item"><a class="page-link" th:href="@{?page={page}(page=${page + 1 })}"
                                              th:text="${page + 1}"></a></li>
-                    <li class="page-item"><a class="page-link" th:href="@{micropostshome?page={page}(page=${page + 2})}"
+                    <li class="page-item"><a class="page-link" th:href="@{?page={page}(page=${page + 2})}"
                                              th:text="${page + 2}"></a></li>
                     <li class="page-item">
-                        <a class="page-link" th:href="@{micropostshome?page={page}(page=${page + 1})}">次へ</a>
+                        <a class="page-link" th:href="@{?page={page}(page=${page + 1})}">次へ</a>
                     </li>
                 </ul>
             </nav>

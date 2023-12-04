@@ -38,23 +38,25 @@ public class MicropostServiceImpl implements MicropostService {
                         new MicropostDto(
                                 mUserDao.findUser(it.getUserId()).getName(),
                                 it.getContent(),
-                                it.getPostedDatetime()
+                                it.getPostedDatetime(),
+                                it.getUserId()
                         )
                 ).toList();
     }
 
     @Override
-    public List<MicropostDto> searchUserMicropost(String userId, int page) {
+    public List<MicropostDto>searchUserMicropost(String userId, int page) {
         return tMicropostDao.searchUserMicropost(userId, page)
                 .stream().map(it ->
                         new MicropostDto(
                                 mUserDao.findUser(it.getUserId()).getName(),
                                 it.getContent(),
-                                it.getPostedDatetime()
+                                it.getPostedDatetime(),
+                                it.getUserId()
                         )
                 ).toList();
     }
-
+    
     @Override
     @Transactional
     public int createNewMicropost(String userId, String content) {
