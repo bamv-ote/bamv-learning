@@ -36,6 +36,8 @@ public class MicropostServiceImpl implements MicropostService {
         return tMicropostDao.searchFollowingMicropost(userId, page)
                 .stream().map(it ->
                         new MicropostDto(
+                                //修正箇所
+                                it.getUserId(),
                                 mUserDao.findUser(it.getUserId()).getName(),
                                 it.getContent(),
                                 it.getPostedDatetime()
@@ -48,6 +50,8 @@ public class MicropostServiceImpl implements MicropostService {
         return tMicropostDao.searchUserMicropost(userId, page)
                 .stream().map(it ->
                         new MicropostDto(
+                                //修正箇所
+                                it.getUserId(),
                                 mUserDao.findUser(it.getUserId()).getName(),
                                 it.getContent(),
                                 it.getPostedDatetime()
