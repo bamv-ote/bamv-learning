@@ -1,7 +1,9 @@
 package bamv.training.microposts.controller;
 
+import bamv.training.microposts.dao.UserListDao;
 import bamv.training.microposts.dto.MicropostDto;
 import bamv.training.microposts.dto.UserDto;
+import bamv.training.microposts.entity.TFollow;
 import bamv.training.microposts.form.MicropostForm;
 import bamv.training.microposts.form.UserForm;
 import bamv.training.microposts.service.FollowService;
@@ -30,6 +32,11 @@ public class MicropostsController {
 
     @Autowired
     private FollowService followService;
+
+    @Autowired
+    private UserListDao userListDao;
+
+    
 
     @GetMapping("/micropostshome")
     String micropostshome(Model model, @ModelAttribute MicropostForm micropostForm, BindingResult bindingResult, HttpServletRequest httpServletRequest, @RequestParam(name = "page", defaultValue = "1") int page) {
@@ -107,4 +114,35 @@ public class MicropostsController {
 
         return "redirect:/login";
     }
+
+    @GetMapping("/userlist")
+    String userlist(Model model, HttpServletRequest httpServletRequest, @RequestParam(name = "page", defaultValue = "1") int page) {
+        /* ユーザー認証情報からユーザIDを取得 */
+        String userId = httpServletRequest.getRemoteUser();
+
+        /* Model ⇔ Controller */
+        UserDto user = userService.findUser(userId); // 自ユーザー情報
+        int myFollowNumber = followService.findFollowNumber(userId); // 自ユーザーのフォロー数
+        int myFollowerNumber = followService.findFollowerNumber(userId); // 自ユーザーのフォロワー数
+
+        /* View ⇔ Controller */
+        model.addAttribute("userlist", userListDao.listUser(userId, page));
+        model.addAttribute("myUserName", user.getName());
+        model.addAttribute("myFollowNumber", myFollowNumber);
+        model.addAttribute("myFollowerNumber", myFollowerNumber);
+        model.addAttribute("page", page);
+        return "userlist";
+    }
+
+    @GetMapping("/followStatus")
+    public String followStatus(HttpServletRequest httpServletRequest,
+                               @RequestParam("id") String id,
+                               @RequestParam("status") String status,
+                               @RequestParam("page") String page) {
+        /* ユーザー認証情報からユーザIDを取得 */
+        String userId = httpServletRequest.getRemoteUser();
+        userListDao.followAction(userId,id,status);
+        return "redirect:/userlist?page="+page;
+    }
+    
 }
