@@ -93,6 +93,14 @@ public class MicropostsController {
         return "myprofile";
     }
 
+    @GetMapping("/users")
+    String users(Model model, HttpServletRequest httpServletRequest) {
+        /* ユーザー認証情報からユーザIDを取得 */
+        String userId = httpServletRequest.getRemoteUser();
+
+        return "users";
+    }
+
     @GetMapping("/signup")
     String signup(Model model, @ModelAttribute UserForm userForm, BindingResult bindingResult) {
         return "signup";
