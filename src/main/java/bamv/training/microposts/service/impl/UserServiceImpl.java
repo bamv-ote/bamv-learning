@@ -9,6 +9,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
@@ -30,5 +32,17 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public int createNewUser(String userId, String name, String password) {
         return mUserDao.addNewUser(userId, name, password);
+    }
+
+    @Override
+    public List<UserDto> findAllUsers(String userId) {
+        return mUserDao.findAllUsers(userId)
+                .stream()
+                .map(it ->
+                        new UserDto(
+                                it.getUserId(),
+                                it.getName()
+                        )
+                ).toList();
     }
 }

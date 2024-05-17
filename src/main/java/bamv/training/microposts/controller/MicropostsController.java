@@ -98,6 +98,12 @@ public class MicropostsController {
         /* ユーザー認証情報からユーザIDを取得 */
         String userId = httpServletRequest.getRemoteUser();
 
+        /* Model ⇔ Controller */
+        List<UserDto> allUsers = userService.findAllUsers(userId);
+
+        /* View ⇔ Controller */
+        model.addAttribute("userList", allUsers);
+
         return "users";
     }
 
