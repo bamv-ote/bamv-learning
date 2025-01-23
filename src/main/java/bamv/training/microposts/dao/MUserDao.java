@@ -12,4 +12,7 @@ public interface MUserDao {
     List<MUser> searchUser(String userId);
 
     int addNewUser(String userId, String name, String password);
+
+    //すべてのユーザーをリストとして返す
+    List<MUser> findAllUsers();
 }

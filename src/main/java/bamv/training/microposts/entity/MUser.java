@@ -30,4 +30,8 @@ public class MUser {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public String toString(){
+        return "userId: " + this.userId + "  name: " + this.name + " password: " + this.password;
+    }
 }

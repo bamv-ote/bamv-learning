@@ -1,7 +1,10 @@
 package bamv.training.microposts.controller;
 
+import bamv.training.microposts.dao.MUserDao;
+import bamv.training.microposts.dao.impl.MUserDaoImpl;
 import bamv.training.microposts.dto.MicropostDto;
 import bamv.training.microposts.dto.UserDto;
+import bamv.training.microposts.entity.MUser;
 import bamv.training.microposts.form.MicropostForm;
 import bamv.training.microposts.form.UserForm;
 import bamv.training.microposts.service.FollowService;
@@ -9,6 +12,8 @@ import bamv.training.microposts.service.MicropostService;
 import bamv.training.microposts.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import org.apache.catalina.User;
+import org.apache.catalina.filters.RemoteIpFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +23,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -106,5 +112,18 @@ public class MicropostsController {
         userService.createNewUser(userForm.getUserId(), userForm.getUserName(), userForm.getPassword());
 
         return "redirect:/login";
+    }
+
+    @GetMapping("/users")
+    String getUsers(Model model, HttpServletRequest httpServletRequest){
+        /* ユーザー認証情報からユーザIDを取得 */
+        String thisUserId = httpServletRequest.getRemoteUser();
+        List<MUser> users = userService.getUsersList();
+
+        System.out.println(users);
+
+        model.addAttribute("usersList", users);
+
+        return "users";
     }
 }
