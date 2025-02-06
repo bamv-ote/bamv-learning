@@ -1,7 +1,5 @@
 package bamv.training.microposts.controller;
 
-import bamv.training.microposts.dao.MUserDao;
-import bamv.training.microposts.dao.impl.MUserDaoImpl;
 import bamv.training.microposts.dto.MicropostDto;
 import bamv.training.microposts.dto.UserDto;
 import bamv.training.microposts.entity.MUser;
@@ -13,15 +11,12 @@ import bamv.training.microposts.service.MicropostService;
 import bamv.training.microposts.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import org.apache.catalina.User;
-import org.apache.catalina.filters.RemoteIpFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -147,10 +142,19 @@ public class MicropostsController {
     }
 
     @PostMapping("/follow")
-    String follow(Model model, String followedId, HttpServletRequest httpServletRequest){
+    String follow(String followedId, HttpServletRequest httpServletRequest){
         //自分自身のID
         String thisUserId = httpServletRequest.getRemoteUser();
         followService.followUser(thisUserId, followedId);
+
+        return "redirect:/users";
+    }
+
+    @PostMapping("/unfollow")
+    String unfollow(String followedId, HttpServletRequest httpServletRequest){
+        //自分自身のID
+        String thisUserId = httpServletRequest.getRemoteUser();
+        followService.unfollow(thisUserId, followedId);
 
         return "redirect:/users";
     }

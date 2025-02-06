@@ -10,6 +10,8 @@ public interface FollowService {
     int findFollowerNumber(String userId);
 
     void followUser(String followingId, String followedId);
-
+    //自ユーザがフォローしているリストを返す
     List<TFollow> getFollowList(String userId);
+    //フォロー解除
+    void unfollow(String followingId, String followedId);
 }

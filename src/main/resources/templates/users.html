@@ -24,12 +24,19 @@
                             <!-- 名前とリンク-->
                             <div class="d-flex flex-column col-9 justify-content-center">
                                 <a th:text=${user.name} th:href="@{/user/{id}(id=${user.userId})}"></a>
-                                <form method="post" action="follow">
+                                <!--フォローボタンフォーム-->
+                                <form method="post" action="/follow" th:if="${!#lists.contains(followedList,user.userId)}">
                                     <input type="hidden" name="followedId" th:value="${user.userId}" />
-                                    <!--ボタン-->
-                                    <button class="btn btn-primary mt-1 col-3" type="submit"
-                                            th:disabled="${#lists.contains(followedList,user.userId)}">
-                                        <span th:text="${#lists.contains(followedList,user.userId)? 'フォロー中' : 'フォロー'} "></span>
+                                    <button class="btn btn-primary mt-1 col-3" type="submit">
+                                        follow
+                                    </button>
+                                </form>
+
+                                <!--アンフォローボタンフォーム-->
+                                <form method="post" action="/unfollow" th:if="${#lists.contains(followedList,user.userId)}">
+                                    <input type="hidden" name="followedId" th:value="${user.userId}" />
+                                    <button class="btn btn-primary mt-1 col-3" type="submit">
+                                        unfollow
                                     </button>
                                 </form>
                             </div>

@@ -39,6 +39,11 @@ public class TFollowDaoImpl implements TFollowDao {
                 followingId,
                 followedId);
     }
+    public void deleteFollowing(String followingId,String followedId){
+        String query = "DELETE FROM t_follow WHERE following_user_id = ? AND followed_user_id = ?";
+
+        jdbcTemplate.update(query, followingId, followedId);
+    }
 
     public List<TFollow> findFollowing(String userId){
         RowMapper<TFollow> rowMapper = new BeanPropertyRowMapper<>(TFollow.class);

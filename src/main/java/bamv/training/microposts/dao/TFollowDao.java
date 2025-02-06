@@ -14,4 +14,6 @@ public interface TFollowDao {
     void insertFollowTable(String followingID, String followedID);
 
     List<TFollow> findFollowing(String userId);
+
+    public void deleteFollowing(String followingId,String followedId);
 }

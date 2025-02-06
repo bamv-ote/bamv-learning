@@ -23,6 +23,7 @@ public class FollowServiceImpl implements FollowService {
         return tFollowDao.countFollowerNumber(userId);
     }
 
+
     public void followUser(String followingId, String followedId){
         if(followingId.equals(followedId)){return;}
          tFollowDao.insertFollowTable(followingId,followedId);
@@ -31,5 +32,9 @@ public class FollowServiceImpl implements FollowService {
     public List<TFollow>getFollowList(String userId){
         List<TFollow>list = tFollowDao.findFollowing(userId);
         return list;
+    }
+
+    public void unfollow(String followingId, String followedId){
+        tFollowDao.deleteFollowing(followingId, followedId);
     }
 }
