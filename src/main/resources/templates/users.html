@@ -9,23 +9,32 @@
     <title>Users</title>
 </head>
 <body>
-<span th:replace="~{header :: header}"></span>
-    <div class="d-flex justify-content-center align-items-center flex-column col-12">
-        <h1>Users</h1>
-        <div class="col-md-10">
-            <div th:each="user : ${usersList}" class="d-flex col-md-9">
-                <div class="col-3">
-                    <span style="font-size: 100px" class="material-icons">person</span>
-                </div>
-                <div class="col-9">
-                    <a th:text=${user.name}></a>
-                    <form method="post" action="follow">
-                        <input type="hidden" name="followedId" th:text="${user.userId}" th:value="${user.userId}" />
-                        <button class="btn btn-primary" type="submit"
-                                th:disabled="${#lists.contains(followedList,user.userId)}">
-                            <span th:text="${#lists.contains(followedList,user.userId)? 'フォロー中' : 'フォロー'} "></span>
-                        </button>
-                    </form>
+    <span th:replace="~{header :: header}"></span>
+    <div class="col-12 d-flex justify-content-center">
+        <div class="d-flex justify-content-center col-10">
+            <!--ページのメイン要素-->
+            <div class="col-8 d-flex flex-column align-items-start">
+                <h1 class="mb-3">Users</h1>
+                <!-- userのコンテナ-->
+                <div class="col-md-6 d-flex flex-column align-items-start">
+                    <div th:each="user : ${usersList}" class="border d-flex col-12 justify-content-center align-items-center">
+                        <div class="col-12 d-flex justify-content-center" >
+                            <!--icon-->
+                            <span style="font-size: 100px" class="material-icons col-3">person</span>
+                            <!-- 名前とリンク-->
+                            <div class="d-flex flex-column col-9 justify-content-center">
+                                <a th:text=${user.name} th:href="@{/user/{id}(id=${user.userId})}"></a>
+                                <form method="post" action="follow">
+                                    <input type="hidden" name="followedId" th:value="${user.userId}" />
+                                    <!--ボタン-->
+                                    <button class="btn btn-primary mt-1 col-3" type="submit"
+                                            th:disabled="${#lists.contains(followedList,user.userId)}">
+                                        <span th:text="${#lists.contains(followedList,user.userId)? 'フォロー中' : 'フォロー'} "></span>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

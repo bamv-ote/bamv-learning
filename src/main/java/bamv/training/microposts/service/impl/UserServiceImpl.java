@@ -34,8 +34,17 @@ public class UserServiceImpl implements UserService {
         return mUserDao.addNewUser(userId, name, password);
     }
 
+    @Override
     public List<MUser> getUsersList(){
         List<MUser> list = mUserDao.findAllUsers();
         return  list;
+    }
+
+    @Override
+    public List<MUser> getOtherUsersList(String userId){
+        List<MUser> list = mUserDao.findAllUsers()
+                            .stream().filter(u -> !u.getUserId().equals(userId)).toList();
+
+        return list;
     }
 }

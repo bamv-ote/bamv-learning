@@ -12,4 +12,5 @@ public interface UserService {
 
     List<MUser> getUsersList();
 
+    List<MUser> getOtherUsersList(String userId);
 }
