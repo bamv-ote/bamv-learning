@@ -5,6 +5,7 @@ import bamv.training.microposts.dao.impl.MUserDaoImpl;
 import bamv.training.microposts.dto.MicropostDto;
 import bamv.training.microposts.dto.UserDto;
 import bamv.training.microposts.entity.MUser;
+import bamv.training.microposts.entity.TFollow;
 import bamv.training.microposts.form.MicropostForm;
 import bamv.training.microposts.form.UserForm;
 import bamv.training.microposts.service.FollowService;
@@ -119,11 +120,23 @@ public class MicropostsController {
         /* ユーザー認証情報からユーザIDを取得 */
         String thisUserId = httpServletRequest.getRemoteUser();
         List<MUser> users = userService.getUsersList();
-
-        System.out.println(users);
-
+        List<TFollow>follow = followService.getFollowList(thisUserId);
+        List<String> followedIds = follow.stream().map(f -> f.getFollowedUserId()).toList();
         model.addAttribute("usersList", users);
+        model.addAttribute("followedList", followedIds);
+
+
 
         return "users";
     }
+
+    @PostMapping("/follow")
+    String follow(Model model, String followedId, HttpServletRequest httpServletRequest){
+        //フォローする側のId
+        String thisUserId = httpServletRequest.getRemoteUser();
+        followService.followUser(thisUserId, followedId);
+
+        return "redirect:/users";
+    }
+
 }

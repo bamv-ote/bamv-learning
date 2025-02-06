@@ -21,6 +21,7 @@ public class SequenceServiceImpl implements SequenceService {
     public String issueSequence(String idName) {
         MSequence mSequence = mSequenceDao.findSequence(idName);
         mSequenceDao.incrementSequenceCurrentNumber(mSequence);
-        return String.format("MP%08d", mSequence.getCurrentNumber() + 1);
+
+        return String.format(mSequence.getPrefix() + "%08d",mSequence.getCurrentNumber() + 1);
     }
 }
