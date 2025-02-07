@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -30,5 +31,11 @@ public class MUserDaoImpl implements MUserDao {
     public int addNewUser(String userId, String name, String password) {
         String query = "insert into m_user (user_id, name, password) values (?, ?, ?)";
         return jdbcTemplate.update(query, userId, name, password);
+    }
+
+    public List<MUser> findAllUsers(){
+        String query = "SELECT * FROM m_user";
+
+        return jdbcTemplate.query(query, new BeanPropertyRowMapper<>(MUser.class));
     }
 }

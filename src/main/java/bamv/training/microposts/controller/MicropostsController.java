@@ -2,6 +2,8 @@ package bamv.training.microposts.controller;
 
 import bamv.training.microposts.dto.MicropostDto;
 import bamv.training.microposts.dto.UserDto;
+import bamv.training.microposts.entity.MUser;
+import bamv.training.microposts.entity.TFollow;
 import bamv.training.microposts.form.MicropostForm;
 import bamv.training.microposts.form.UserForm;
 import bamv.training.microposts.service.FollowService;
@@ -13,10 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -92,6 +91,23 @@ public class MicropostsController {
 
         return "myprofile";
     }
+    @GetMapping("/user/{id}")
+    String userProfile(@PathVariable("id") String userId, Model model, @RequestParam(name = "page", defaultValue = "1") int page){
+        UserDto user = userService.findUser(userId);//表示されるユーザー
+        List<MicropostDto> followsMicropostList = micropostService.searchUserMicropost(userId, page); //マイクロポスト
+        int followNumber = followService.findFollowNumber(userId); // フォロー数
+        int followerNumber = followService.findFollowerNumber(userId); // フォロワー数
+
+        /* View ⇔ Controller */
+        model.addAttribute("userId", userId);
+        model.addAttribute("userName", user.getName());
+        model.addAttribute("followNumber", followNumber);
+        model.addAttribute("followerNumber", followerNumber);
+        model.addAttribute("followsMicropostList", followsMicropostList);
+        model.addAttribute("page", page);
+
+        return "userprofile";
+    }
 
     @GetMapping("/signup")
     String signup(Model model, @ModelAttribute UserForm userForm, BindingResult bindingResult) {
@@ -107,4 +123,40 @@ public class MicropostsController {
 
         return "redirect:/login";
     }
+
+    @GetMapping("/users")
+    String getUsers(Model model, HttpServletRequest httpServletRequest){
+        /* ユーザー認証情報からユーザIDを取得 */
+        String thisUserId = httpServletRequest.getRemoteUser();
+
+        //自分をのぞいたユーザーリスト
+        List<MUser> users = userService.getOtherUsersList(thisUserId);
+        List<TFollow>follow = followService.getFollowList(thisUserId);
+
+        //フォローエンティティのリストからフォローしているIDだけを抽出してリストにする
+        List<String> followedIds = follow.stream().map(f -> f.getFollowedUserId()).toList();
+        model.addAttribute("usersList", users);
+        model.addAttribute("followedList", followedIds);
+
+        return "users";
+    }
+
+    @PostMapping("/follow")
+    String follow(String followedId, HttpServletRequest httpServletRequest){
+        //自分自身のID
+        String thisUserId = httpServletRequest.getRemoteUser();
+        followService.followUser(thisUserId, followedId);
+
+        return "redirect:/users";
+    }
+
+    @PostMapping("/unfollow")
+    String unfollow(String followedId, HttpServletRequest httpServletRequest){
+        //自分自身のID
+        String thisUserId = httpServletRequest.getRemoteUser();
+        followService.unfollow(thisUserId, followedId);
+
+        return "redirect:/users";
+    }
+
 }
