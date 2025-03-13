@@ -12,4 +12,8 @@ public interface MUserDao {
     List<MUser> searchUser(String userId);
 
     int addNewUser(String userId, String name, String password);
+
+    List<MUser> findAllUsersExcept(String excludeUserId, int offset, int limit);
+
+    MUser findUserByName(String name);
 }

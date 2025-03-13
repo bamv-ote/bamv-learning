@@ -9,6 +9,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
@@ -30,5 +32,16 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public int createNewUser(String userId, String name, String password) {
         return mUserDao.addNewUser(userId, name, password);
+    }
+
+    @Override
+    public List<MUser> findAllUsersExcept(String excludeUserId, int offset, int limit) {
+        return mUserDao.findAllUsersExcept(excludeUserId, offset, limit);
+    }
+
+    @Override
+    public UserDto findUserByName(String userName) {
+        MUser mUser = mUserDao.findUserByName(userName);
+        return new UserDto(mUser.getUserId(), mUser.getName());
     }
 }
