@@ -31,4 +31,18 @@ public class MUserDaoImpl implements MUserDao {
         String query = "insert into m_user (user_id, name, password) values (?, ?, ?)";
         return jdbcTemplate.update(query, userId, name, password);
     }
+
+    @Override
+    public List<MUser> findAllUsersExcept(String excludeUserId, int offset, int limit) {
+        RowMapper<MUser> rowMapper = new BeanPropertyRowMapper<>(MUser.class);
+        String query = "SELECT * FROM m_user WHERE user_id <> ? ORDER BY user_id ASC LIMIT ?, ?";
+        return jdbcTemplate.query(query, rowMapper, excludeUserId, offset, limit);
+    }
+
+    @Override
+    public MUser findUserByName(String name) {
+        RowMapper<MUser> rowMapper = new BeanPropertyRowMapper<>(MUser.class);
+        String query = "SELECT * FROM m_user WHERE name = ?";
+        return jdbcTemplate.queryForObject(query, rowMapper, name);
+    }
 }

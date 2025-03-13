@@ -74,3 +74,12 @@ WHERE
     NOT EXISTS (
         SELECT 1 FROM m_sequence WHERE id_name ='micropost_id'
     );
+INSERT INTO m_sequence
+SELECT
+    'follow_id'
+    , 'FL'
+    , 0
+WHERE
+    NOT EXISTS (
+        SELECT 1 FROM m_sequence WHERE id_name ='follow_id'
+    );
