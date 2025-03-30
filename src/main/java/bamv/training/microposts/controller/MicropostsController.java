@@ -77,15 +77,15 @@ public class MicropostsController {
 
         if(userId==null)
         {
-            /* ユーザー認証情報からユーザIDを取得 */
+            /* ID指定がない場合ユーザー認証情報から自ユーザIDを取得 */
             userId = httpServletRequest.getRemoteUser();
         }
 
         /* Model ⇔ Controller */
-        UserDto user = userService.findUser(userId); // 自ユーザー情報
+        UserDto user = userService.findUser(userId); // ユーザー情報
         List<MicropostDto> followsMicropostList = micropostService.searchUserMicropost(userId, page); // 自ユーザーのマイクロポスト
-        int myFollowNumber = followService.findFollowNumber(userId); // 自ユーザーのフォロー数
-        int myFollowerNumber = followService.findFollowerNumber(userId); // 自ユーザーのフォロワー数
+        int myFollowNumber = followService.findFollowNumber(userId); // ユーザーのフォロー数
+        int myFollowerNumber = followService.findFollowerNumber(userId); // ユーザーのフォロワー数
 
         /* View ⇔ Controller */
         model.addAttribute("myUserName", user.getName());
