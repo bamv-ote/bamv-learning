@@ -24,7 +24,7 @@
                         <div class="col-md-8">
                             <div>
                                 <h5 th:text="${myUserName}"></h5>
-                                <p><a href="./myprofile">マイプロフィール</a></p>
+                                <p><a href="./userprofile">マイプロフィール</a></p>
                                 <p><span th:text="${myMicropostsNumber}"></span><small class="text-muted">
                                     投稿</small></p>
                                 <span
@@ -75,7 +75,7 @@
                     <div class="col-md-10">
                         <div class="card-body">
                             <h5 class="card-title">
-                                <span th:text="${followsMicropost.name}"></span>
+                                <a th:href="@{userprofile?userId={userId}(userId=${followsMicropost.userId})}"><span th:text="${followsMicropost.name}"></span></a>
                             </h5>
                             <p class="card-text" th:text="${followsMicropost.content}">
                             </p>
