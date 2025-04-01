@@ -72,16 +72,20 @@ public class MicropostsController {
         return "login";
     }
 
-    @GetMapping("/myprofile")
-    String myprofile(Model model, HttpServletRequest httpServletRequest, @RequestParam(name = "page", defaultValue = "1") int page) {
-        /* ユーザー認証情報からユーザIDを取得 */
-        String userId = httpServletRequest.getRemoteUser();
+    @GetMapping("/userprofile")
+    String userprofile(Model model, HttpServletRequest httpServletRequest,@RequestParam(name="userId",required = false) String userId, @RequestParam(name = "page", defaultValue = "1") int page) {
+
+        if(userId==null)
+        {
+            /* ID指定がない場合ユーザー認証情報から自ユーザIDを取得 */
+            userId = httpServletRequest.getRemoteUser();
+        }
 
         /* Model ⇔ Controller */
-        UserDto user = userService.findUser(userId); // 自ユーザー情報
+        UserDto user = userService.findUser(userId); // ユーザー情報
         List<MicropostDto> followsMicropostList = micropostService.searchUserMicropost(userId, page); // 自ユーザーのマイクロポスト
-        int myFollowNumber = followService.findFollowNumber(userId); // 自ユーザーのフォロー数
-        int myFollowerNumber = followService.findFollowerNumber(userId); // 自ユーザーのフォロワー数
+        int myFollowNumber = followService.findFollowNumber(userId); // ユーザーのフォロー数
+        int myFollowerNumber = followService.findFollowerNumber(userId); // ユーザーのフォロワー数
 
         /* View ⇔ Controller */
         model.addAttribute("myUserName", user.getName());
@@ -89,9 +93,13 @@ public class MicropostsController {
         model.addAttribute("myFollowerNumber", myFollowerNumber);
         model.addAttribute("followsMicropostList", followsMicropostList);
         model.addAttribute("page", page);
+        model.addAttribute("userId", userId);
+        model.addAttribute("micropostNumber", micropostService.countMicropostNumber(userId));
 
-        return "myprofile";
+        return "userprofile";
     }
+
+
 
     @GetMapping("/signup")
     String signup(Model model, @ModelAttribute UserForm userForm, BindingResult bindingResult) {

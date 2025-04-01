@@ -40,7 +40,7 @@
         </aside>
 
         <div class="col-md-8">
-            <h3>投稿一覧</h3>
+            <h3>投稿一覧(<span th:text="${micropostNumber}"></span>)</h3>
             <div class="card mb-3" th:each="followsMicropost : ${followsMicropostList}">
                 <div class="row g-0">
                     <div
@@ -51,7 +51,7 @@
                     <div class="col-md-10">
                         <div class="card-body">
                             <h5 class="card-title">
-                                <span th:text="${followsMicropost.name}"></span>
+                                <a th:href="@{userprofile?userId={userId}(userId=${followsMicropost.userId})}"><span th:text="${followsMicropost.name}"></span></a>
                             </h5>
                             <p class="card-text" th:text="${followsMicropost.content}">
                             </p>
@@ -72,20 +72,20 @@
                 <ul class="pagination">
                     <li class="page-item">
                         <th:block th:if="${page - 1} > 0">
-                            <a class="page-link" th:href="@{myprofile?page={page}(page=${page - 1})}">前へ</a>
+                            <a class="page-link" th:href="@{userprofile?userId={userId}&page={page}(userId=${userId},page=${page - 1})}">前へ</a>
                         </th:block>
                         <th:block th:if="${page - 1} <= 0">
                             <a class="page-link" href="#">前へ</a>
                         </th:block>
                     </li>
-                    <li class="page-item"><a class="page-link" th:href="@{myprofile?page={page}(page=${page})}"
+                    <li class="page-item"><a class="page-link" th:href="@{userprofile?userId={userId}&page={page}(userId=${userId},page=${page})}"
                                              th:text="${page}"></a></li>
-                    <li class="page-item"><a class="page-link" th:href="@{myprofile?page={page}(page=${page + 1 })}"
+                    <li class="page-item"><a class="page-link" th:href="@{userprofile?userId={userId}&page={page}(userId=${userId},page=${page + 1})}"
                                              th:text="${page + 1}"></a></li>
-                    <li class="page-item"><a class="page-link" th:href="@{myprofile?page={page}(page=${page + 2})}"
+                    <li class="page-item"><a class="page-link" th:href="@{userprofile?userId={userId}(userId=${userId})&page={page}(userId=${userId},page=${page + 2})}"
                                              th:text="${page + 2}"></a></li>
                     <li class="page-item">
-                        <a class="page-link" th:href="@{myprofile?page={page}(page=${page + 1})}">次へ</a>
+                        <a class="page-link" th:href="@{userprofile?userId={userId}&page={page}(userId=${userId},page=${page + 1})}">次へ</a>
                     </li>
                 </ul>
             </nav>
