@@ -3,11 +3,14 @@ package bamv.training.microposts.service.impl;
 import bamv.training.microposts.dao.MUserDao;
 import bamv.training.microposts.dto.UserDto;
 import bamv.training.microposts.entity.MUser;
+import bamv.training.microposts.service.FollowService;
 import bamv.training.microposts.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -16,6 +19,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private MUserDao mUserDao;
+
+    @Autowired
+    private FollowService followService;
 
     @Override
     public UserDto findUser(String userId) {
@@ -27,8 +33,48 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserDto findUser(String myUserId, String userId) {
+        MUser mUser = mUserDao.findUser(userId);
+        return new UserDto(
+                mUser.getUserId(),
+                mUser.getName(),
+                followService.isFollowing(myUserId, userId)
+        );
+    }
+
+    @Override
     @Transactional
     public int createNewUser(String userId, String name, String password) {
         return mUserDao.addNewUser(userId, name, password);
+    }
+
+    @Override
+    public List<UserDto> findAllUsers(String userId, int page) {
+        List<MUser> mUsers = mUserDao.findAllUsers(userId, page);
+        return mUsers.stream().map(user ->
+                        new UserDto(user.getUserId(),
+                                    user.getName(),
+                                    followService.isFollowing(userId, user.getUserId()))
+        ).toList();
+    }
+
+    @Override
+    public List<UserDto> findFollowingUsers(String myUserId, String userId, int page) {
+        List<MUser> mUsers = mUserDao.findFollowingUsers(userId, page);
+        return mUsers.stream().map(user ->
+                        new UserDto(user.getUserId(),
+                                    user.getName(),
+                                    followService.isFollowing(myUserId, user.getUserId()))
+        ).toList();
+    }
+
+    @Override
+    public List<UserDto> findFollowedUsers(String myUserId, String userId, int page) {
+        List<MUser> mUsers = mUserDao.findFollowedUsers(userId, page);
+        return mUsers.stream().map(user ->
+                        new UserDto(user.getUserId(),
+                                    user.getName(),
+                                    followService.isFollowing(myUserId, user.getUserId()))
+        ).toList();
     }
 }

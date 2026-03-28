@@ -12,6 +12,9 @@ import java.util.List;
 
 @Repository
 public class MUserDaoImpl implements MUserDao {
+    /* ユーザ一覧での1ページの表示人数 */
+    private static final int USERLIST_OFFSET_NUMBER = 3;
+
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
@@ -30,5 +33,63 @@ public class MUserDaoImpl implements MUserDao {
     public int addNewUser(String userId, String name, String password) {
         String query = "insert into m_user (user_id, name, password) values (?, ?, ?)";
         return jdbcTemplate.update(query, userId, name, password);
+    }
+
+    @Override
+    public List<MUser> findAllUsers(String userId, int page) {
+        RowMapper<MUser> rowMapper = new BeanPropertyRowMapper<>(MUser.class);
+        int offset = USERLIST_OFFSET_NUMBER * (page - 1);
+        String query = """
+                    SELECT
+                        *
+                    FROM
+                        m_user
+                    WHERE NOT 
+                        user_id = ?
+                    ORDER BY
+                        user_id desc
+                    limit ?, 3
+                   """;
+        return jdbcTemplate.query(query, rowMapper, userId, offset);
+    }
+
+    @Override
+    public List<MUser> findFollowingUsers(String userId, int page) {
+        RowMapper<MUser> rowMapper = new BeanPropertyRowMapper<>(MUser.class);
+        int offset = USERLIST_OFFSET_NUMBER * (page - 1);
+        String query = """
+                    SELECT
+                        m_user.*
+                    FROM
+                        m_user, t_follow
+                    WHERE 
+                        t_follow.following_user_id = ?
+                        AND
+                        m_user.user_id = t_follow.followed_user_id
+                    ORDER BY
+                        user_id desc
+                    limit ?, 3
+                   """;
+        return jdbcTemplate.query(query, rowMapper, userId, offset);
+    }
+
+    @Override
+    public List<MUser> findFollowedUsers(String userId, int page) {
+        RowMapper<MUser> rowMapper = new BeanPropertyRowMapper<>(MUser.class);
+        int offset = USERLIST_OFFSET_NUMBER * (page - 1);
+        String query = """
+                    SELECT
+                        m_user.*
+                    FROM
+                        m_user, t_follow
+                    WHERE
+                        t_follow.followed_user_id = ?
+                        AND
+                        m_user.user_id = t_follow.following_user_id
+                    ORDER BY
+                        user_id desc
+                    limit ?, 3
+                   """;
+        return jdbcTemplate.query(query, rowMapper, userId, offset);
     }
 }
