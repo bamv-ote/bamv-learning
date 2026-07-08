@@ -21,6 +21,12 @@ public class MUserDaoImpl implements MUserDao {
         return jdbcTemplate.queryForObject(query, rowMapper, userId);
     }
 
+    public List<MUser> findUserAll() {
+        RowMapper<MUser> rowMapper = new BeanPropertyRowMapper<>(MUser.class);
+        String query = "SELECT * FROM m_user ORDER BY user_id";
+        return jdbcTemplate.query(query, rowMapper);
+    }
+
     public List<MUser> searchUser(String userId) {
         RowMapper<MUser> rowMapper = new BeanPropertyRowMapper<>(MUser.class);
         String query = "SELECT * FROM m_user WHERE user_id = ?";

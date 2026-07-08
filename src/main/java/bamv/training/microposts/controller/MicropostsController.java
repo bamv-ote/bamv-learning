@@ -107,4 +107,13 @@ public class MicropostsController {
 
         return "redirect:/login";
     }
+
+    @GetMapping("/users")
+    String users(Model model) {
+        List<UserDto> userList = userService.findUserAll();
+
+        model.addAttribute("userList", userList);
+
+        return "users";
+    }
 }
