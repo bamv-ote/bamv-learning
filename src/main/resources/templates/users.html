@@ -21,11 +21,16 @@
           </div>
           <div class="col-md-10">
             <div class="card-body">
-              <h5 class="card-title" th:text="${user.name}"></h5>
+              <h5 class="card-title">
+                <a th:if="${user.userId == loginUserId}" th:href="@{/myprofile}" th:text="${user.name}"></a>
+                <a th:unless="${user.userId == loginUserId}"
+                   th:href="@{/users/{userId}(userId=${user.userId})}"
+                   th:text="${user.name}"></a>
+              </h5>
                 <div>
-                    <p class="card-text">
-                      <small class="text-muted" th:text="${user.userId}"></small>
-                    </p>
+                  <p class="card-text">
+                    <small class="text-muted" th:text="${user.userId}"></small>
+                  </p>
                   <span><span th:text="${user.followNumber}"></span>
                     <small class="text-muted">フォロー</small>
                   </span>
