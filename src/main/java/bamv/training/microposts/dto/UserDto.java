@@ -9,11 +9,21 @@ public class UserDto {
 
     private int followerNumber;
 
+    private boolean following;
+
     public UserDto(String userId, String name, int followNumber, int followerNumber) {
         this.userId = userId;
         this.name = name;
         this.followNumber = followNumber;
         this.followerNumber = followerNumber;
+    }
+
+    public UserDto(String userId, String name, int followNumber, int followerNumber, boolean following) {
+        this.userId = userId;
+        this.name = name;
+        this.followNumber = followNumber;
+        this.followerNumber = followerNumber;
+        this.following = following;
     }
 
     public String getUserId() {
@@ -28,23 +38,17 @@ public class UserDto {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public void setName(String name) { this.name = name; }
 
-    public int getFollowNumber() {
-        return followNumber;
-    }
+    public int getFollowNumber() { return followNumber; }
 
-    public void setFollowNumber(int followNumber) {
-        this.followNumber = followNumber;
-    }
+    public void setFollowNumber(int followNumber) { this.followNumber = followNumber; }
 
-    public int getFollowerNumber() {
-        return followerNumber;
-    }
+    public int getFollowerNumber() { return followerNumber; }
 
-    public void setFollowerNumber(int followerNumber) {
-        this.followerNumber = followerNumber;
-    }
+    public void setFollowerNumber(int followerNumber) { this.followerNumber = followerNumber; }
+
+    public boolean isFollowing() { return following; }
+
+    public void setFollowing(boolean following) { this.following = following; }
 }

@@ -109,11 +109,25 @@ public class MicropostsController {
     }
 
     @GetMapping("/users")
-    String users(Model model) {
-        List<UserDto> userList = userService.findUserAll();
+    String users(Model model, HttpServletRequest httpServletRequest) {
+        String loginUserId = httpServletRequest.getRemoteUser();
+        List<UserDto> userList = userService.findUserAll(loginUserId);
 
         model.addAttribute("userList", userList);
 
         return "users";
+    }
+
+    @PostMapping("/follow")
+    String follow(HttpServletRequest httpServletRequest, @RequestParam String followedUserId) {
+        String followingUserId = httpServletRequest.getRemoteUser();
+        if (!followingUserId.equals(followedUserId)) {
+            if (followService.isFollow(followingUserId, followedUserId)) {
+                followService.delFollow(followingUserId, followedUserId);
+            } else {
+                followService.addFollow(followingUserId, followedUserId);
+            }
+        }
+        return "redirect:/users";
     }
 }

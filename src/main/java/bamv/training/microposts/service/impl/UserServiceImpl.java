@@ -29,18 +29,20 @@ public class UserServiceImpl implements UserService {
         return new UserDto(
                 mUser.getUserId(),
                 mUser.getName(),
-                followService.findFollowNumber(mUser.getUserId()), followService.findFollowNumber(mUser.getUserId()));
+                followService.findFollowNumber(mUser.getUserId()),
+                followService.findFollowerNumber(mUser.getUserId()));
     }
 
     @Override
-    public List<UserDto> findUserAll() {
+    public List<UserDto> findUserAll(String loginUserId) {
         List<MUser> mUserList = mUserDao.findUserAll();
         return mUserList.stream()
                 .map(mUser -> new UserDto(
                         mUser.getUserId(),
                         mUser.getName(),
                         followService.findFollowNumber(mUser.getUserId()),
-                        followService.findFollowNumber(mUser.getUserId())
+                        followService.findFollowerNumber(mUser.getUserId()),
+                        followService.isFollow(loginUserId, mUser.getUserId())
 
                 ))
                 .toList();

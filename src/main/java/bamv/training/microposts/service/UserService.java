@@ -7,7 +7,7 @@ import java.util.List;
 public interface UserService {
     UserDto findUser(String userId);
 
-    List<UserDto> findUserAll();
+    List<UserDto> findUserAll(String loginUserId);
 
     int createNewUser(String userId, String name, String password);
 }

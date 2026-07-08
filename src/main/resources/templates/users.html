@@ -32,6 +32,14 @@
                   <span><span th:text="${user.followerNumber}"></span>
                     <small class="text-muted">フォロワー</small>
                   </span>
+                  <form th:action="@{/follow}" method="post">
+                    <input type="hidden" name="followedUserId" th:value="${user.userId}">
+                    <button type="submit" class="btn"
+                            th:classappend="${user.following} ? 'btn-secondary' : 'btn-primary'"
+                            th:text="${user.following} ? 'フォロー解除' : 'フォロー'">
+                      フォロー
+                    </button>
+                  </form>
                 </div>
             </div>
           </div>
