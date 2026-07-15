@@ -13,10 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -106,5 +103,44 @@ public class MicropostsController {
         userService.createNewUser(userForm.getUserId(), userForm.getUserName(), userForm.getPassword());
 
         return "redirect:/login";
+    }
+
+    @GetMapping("/users")
+    String users(Model model, HttpServletRequest httpServletRequest) {
+        String loginUserId = httpServletRequest.getRemoteUser();
+        List<UserDto> userList = userService.findUserAll(loginUserId);
+
+        model.addAttribute("userList", userList);
+        model.addAttribute("loginUserId", loginUserId);
+
+        return "users";
+    }
+
+    @GetMapping("/users/{userId}")
+    String userpage(@PathVariable String userId, Model model, @RequestParam(name = "page", defaultValue = "1") int page) {
+        UserDto user = userService.findUser(userId);
+        List<MicropostDto> micropostList = micropostService.searchUserMicropost(userId, page);
+
+        model.addAttribute("userId", user.getUserId());
+        model.addAttribute("userName", user.getName());
+        model.addAttribute("followNumber", user.getFollowNumber());
+        model.addAttribute("followerNumber", user.getFollowerNumber());
+        model.addAttribute("page", page);
+        model.addAttribute("micropostList", micropostList);
+
+        return "userpage";
+    }
+
+    @PostMapping("/follow")
+    String follow(HttpServletRequest httpServletRequest, @RequestParam String followedUserId) {
+        String followingUserId = httpServletRequest.getRemoteUser();
+        if (!followingUserId.equals(followedUserId)) {
+            if (followService.isFollow(followingUserId, followedUserId)) {
+                followService.delFollow(followingUserId, followedUserId);
+            } else {
+                followService.addFollow(followingUserId, followedUserId);
+            }
+        }
+        return "redirect:/users";
     }
 }

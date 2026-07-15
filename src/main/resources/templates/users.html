@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link th:href="@{/webjars/bootstrap/5.2.3/css/bootstrap.min.css}" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <title>ユーザー一覧</title>
+</head>
+<body>
+<span th:replace="~{header :: header}"></span>
+<main class="container">
+  <div class="row">
+    <div class="col-md-8">
+      <h3>ユーザー一覧</h3>
+      <div class="card mb-3" th:each="user : ${userList}">
+        <div class="row g-0">
+          <div class="col-md-2 d-flex align-items-center justify-content-center">
+            <span style="font-size: 100px" class="material-icons">person</span>
+          </div>
+          <div class="col-md-10">
+            <div class="card-body">
+              <h5 class="card-title">
+                <a th:if="${user.userId == loginUserId}" th:href="@{/myprofile}" th:text="${user.name}"></a>
+                <a th:unless="${user.userId == loginUserId}"
+                   th:href="@{/users/{userId}(userId=${user.userId})}"
+                   th:text="${user.name}"></a>
+              </h5>
+                <div>
+                  <p class="card-text">
+                    <small class="text-muted" th:text="${user.userId}"></small>
+                  </p>
+                  <span><span th:text="${user.followNumber}"></span>
+                    <small class="text-muted">フォロー</small>
+                  </span>
+                  <span><span th:text="${user.followerNumber}"></span>
+                    <small class="text-muted">フォロワー</small>
+                  </span>
+                  <form th:action="@{/follow}" method="post">
+                    <input type="hidden" name="followedUserId" th:value="${user.userId}">
+                    <button type="submit" class="btn"
+                            th:classappend="${user.following} ? 'btn-secondary' : 'btn-primary'"
+                            th:text="${user.following} ? 'フォロー解除' : 'フォロー'">
+                      フォロー
+                    </button>
+                  </form>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+</body>
+</html>

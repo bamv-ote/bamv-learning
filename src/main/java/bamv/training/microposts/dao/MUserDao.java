@@ -9,6 +9,8 @@ import java.util.List;
 public interface MUserDao {
     MUser findUser(String userId);
 
+    List<MUser> findUserAll();
+
     List<MUser> searchUser(String userId);
 
     int addNewUser(String userId, String name, String password);
